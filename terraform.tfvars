@@ -1,0 +1,14 @@
+# ComfyUI on AWS - Configuration Example
+# Copy this file to terraform.tfvars and customize as needed
+
+# AWS region for deployment (default: us-east-1)
+# Verify g6e.2xlarge availability in your chosen region
+# aws_region = "us-east-1"
+
+# EC2 instance type (default: g6e.2xlarge - NVIDIA L40S)
+# Other options: g5.2xlarge (A10G), g4dn.xlarge (T4)
+instance_type = "g6e.2xlarge"
+
+# SSH key pair name for instance access (optional)
+# Create a key pair in AWS console first, then uncomment and set:
+# key_name = "my-key-pair"
