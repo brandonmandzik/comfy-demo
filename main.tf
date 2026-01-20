@@ -19,6 +19,23 @@ data "aws_vpc" "default" {
   default = true
 }
 
+# Look up the latest Deep Learning Base AMI for eu-central-1
+# Using Ubuntu 22.04 with Single CUDA for GPU workloads (ComfyUI)
+data "aws_ami" "dlami" {
+  most_recent = true
+  owners      = ["amazon"]
+
+  filter {
+    name   = "name"
+    values = ["Deep Learning Base AMI with Single CUDA (Ubuntu 22.04)*"]
+  }
+
+  filter {
+    name   = "state"
+    values = ["available"]
+  }
+}
+
 # Security group for ComfyUI and SSH access
 resource "aws_security_group" "comfyui" {
   name        = "comfyui-sg"
@@ -59,7 +76,7 @@ resource "aws_security_group" "comfyui" {
 
 # EC2 instance for ComfyUI
 resource "aws_instance" "comfyui" {
-  ami           = "ami-0c9c917c544c180e8"
+  ami           = data.aws_ami.dlami.id
   instance_type = var.instance_type
 
   vpc_security_group_ids = [aws_security_group.comfyui.id]
